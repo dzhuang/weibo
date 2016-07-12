@@ -270,12 +270,12 @@ class weibo_login(object):
         )
         result = urllib2.urlopen(req_login)
         text = result.read()
-        p = re.compile('location\.replace\(\'(.*?)\'\)')
+        p = re.compile('location\.replace\(\"(.*?)\"\)')
         #在使用httpfox登录调试时，我获取的返回参数  location.replace('http://weibo.com 这里使用的是单引号 原来的正则中匹配的是双引号# 导致没有login_url得到 单引号本身在re中无需转义
         #p = re.compile('location\.replace\(\B'(.*?)'\B\)') 经调试 这样子是错误的 re中非的使用\'才能表达单引号
         try:
             #Search login redirection URL
-            login_url = p.search(text).group(1)
+            login_url = p.search(text).group(0).split("\"")[1]
             data = urllib2.urlopen(login_url).read()
             #Verify login feedback, check whether result is TRUE
             patt_feedback = 'feedBackUrlCallBack\((.*)\)'
@@ -288,7 +288,8 @@ class weibo_login(object):
                 return 1
             else:
                 return 0
-        except:
+        except Exception, e:
+            print e
             return 0
 
 
@@ -498,4 +499,6 @@ if __name__ == '__main__':
     # html = weibo_login(username, pwd)
     # print(html.getHTML('http://www.weibo.com/kaifulee'))
     aa = simu()
-    print(aa.detail('http://weibo.com/kaifulee'))
+    while(1):
+        time.sleep(2)
+        print(aa.detail('http://m.weibo.cn'))

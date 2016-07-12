@@ -20,4 +20,5 @@ def simuLogin():
     print simu.detail('http://weibo.com/kaifulee')
 
 if __name__ == '__main__':
-    apiExample()
+    # apiExample()
+    simuLogin()
